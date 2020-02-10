@@ -35,6 +35,39 @@ class Settings extends CI_Controller {
             $data['key'] = 'site_name';
             $data['content'] = $this->input->post('name');
             $flash_message = ($this->settings->update($data)) ? 'Pengaturan berhasil diperbarui!' : 'Terjadi kesalahan';
+
+            $old_logo = get_settings('site_logo');
+
+            if (isset($_FILES) && @$_FILES['file']['error'] == '0') {
+                $config['upload_path'] = './assets/uploads/static/';
+                $config['allowed_types'] = 'jpg|png';
+                $config['max_size'] = 1024;
+                
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('file'))
+                {
+                    if ($old_logo)
+                    {
+                        unlink('./assets/uploads/static/'. $old_logo);
+                    }
+
+                    $file_data = $this->upload->data();
+                    $data['key'] = 'site_logo';
+                    $data['content'] = $file_data['file_name'];
+
+                    $this->settings->update($data);
+                }
+                else
+                {
+                    $errors = $this->upload->display_errors();
+                    $errors .= '<p>';
+                    $errors .= anchor('profile', '&laquo; Kembali');
+                    $errors .= '</p>';
+
+                    show_error($errors);
+                }
+            }
             
             $this->session->set_flashdata('settings', $flash_message);
             redirect('settings');
