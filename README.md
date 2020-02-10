@@ -12,3 +12,5 @@ Demo: [Klik disini](https://jurnalmms.web.id/surat46/)
 Username / Password: admin / 12345
 
 Note: harap jangan mengubah username / password demo-nya
+
+Versi 1.0.1
