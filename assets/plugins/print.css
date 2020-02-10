@@ -1,0 +1,71 @@
+@media print {
+    @page {
+        size: A4
+    }
+    nav, aside, footer, div.outbox_data {
+        display: none;
+    }
+
+    body {
+        font-size: 12pt;
+        font-family: 'Times New Roman'
+    }
+    
+    .line-1 {
+        margin-bottom: 3px;
+    }
+
+    .print_head h5 {
+        font-weight: bold;
+        font-size: 188%;
+    }
+
+    .print_head span.address {
+        font-size: 142%
+    }
+
+    .cc {
+        font-size: 188%;
+    }
+    .cn {
+        margin-top: -30px;
+    }
+    .ck {
+        margin-top: -30px;
+        margin-bottom: -15px
+    }
+    .ccc {
+        margin-top: -20px;
+        margin-bottom: -100px;
+    }
+
+   
+}
+
+table.borderless td {
+    border: none;
+}
+
+.print_head h5 {
+    font-weight: bold;
+}
+
+.print_head .address {
+    font-weight: italic;
+    font-size: 9px;
+}
+
+.printpage {
+    font-size: 12px;
+    font-family: 'Times New Roman'
+}
+
+.img_logo {
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+}
+
+.txt1 {
+    text-indent: 65px;
+}
