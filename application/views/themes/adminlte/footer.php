@@ -237,7 +237,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php if ($current_section == 'classifications') : ?>
 <script>
 function confirmClassificationDelete (classification_id) {
-    $('.confirmdoDeleteFileBtn').click(function (e) {
+    $('.confirmDoDeleteBtn').click(function (e) {
         e.preventDefault();
 
         var currentClassification = $('.data-'+ classification_id);
