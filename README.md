@@ -8,4 +8,5 @@ Aplikasi ini saya buat untuk UKM Mostaneer FT UNIB, namun aplikasi ini bersifat 
 Fitur-fitur maupun bug (yang mungkin akan ada) akan saya perbaiki kedepannya.
 
 Demo: [Klik disini](https://jurnalmms.web.id/surat46/)
+
 SS
