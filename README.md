@@ -6,3 +6,8 @@ Surat46 adalah aplikasi berbasis web yang bisa digunakan untuk mengelola surat m
 
 Aplikasi ini saya buat untuk UKM Mostaneer FT UNIB, namun aplikasi ini bersifat open source dan boleh digunakan dan disebarluaskan secara bebas.
 Fitur-fitur maupun bug (yang mungkin akan ada) akan saya perbaiki kedepannya.
+
+Demo: [Klik disini](https://jurnalmms.web.id/surat46/)
+  Username: admin
+  Password: 12345
+Note: harap tidak mengubah username / password untuk aplikasi demo-nya.
