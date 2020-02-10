@@ -9,4 +9,5 @@ Fitur-fitur maupun bug (yang mungkin akan ada) akan saya perbaiki kedepannya.
 
 Demo: [Klik disini](https://jurnalmms.web.id/surat46/)
 
-SS
+Username / Password: admin / 12345
+Note: harap jangan mengubah username / password demo-nya
