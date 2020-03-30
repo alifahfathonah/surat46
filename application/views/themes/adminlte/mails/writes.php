@@ -74,6 +74,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
 
+            <div class="col-md-4">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h5 class="card-title">Surat Keterangan Aktif</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Surat keterangan bahwa yang bersangkutan adalah pengurus aktif di <?php echo get_settings('site_name'); ?></p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <a href="<?php echo site_url('mails/surat_aktif'); ?>" class="btn btn-primary">
+                                <i class="fa fa-plus"></i> Tulis baru
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h5 class="card-title">Surat Mandat</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Surat mandat organisasi</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <a href="<?php echo site_url('mails/surat_mandat'); ?>" class="btn btn-primary">
+                                <i class="fa fa-plus"></i> Tulis baru
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 

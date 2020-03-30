@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <?php echo $number; ?>
                     </td>
                     <td valign="top" style="float: right; width: 25%">
-                        <?php echo $date; ?>
+                    &nbsp;&nbsp;&nbsp;<?php echo $date; ?>
                     </td>
                 </tr>
                 <tr>
@@ -207,12 +207,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </table>
             <br>
             <table>
-                <?php if ($type ==2) : ?>
+                <?php if ($type == 2 || $type == 3) : ?>
                 <tr>
                     <td></td>
                     <td>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;
                         &nbsp;&nbsp;
                         <b>Mengetahui,</b>
                     </td>

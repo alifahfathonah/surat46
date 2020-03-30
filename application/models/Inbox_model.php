@@ -85,6 +85,18 @@ class Inbox_model extends CI_Model {
         return $inbox;
     }
 
+    public function all_inbox()
+    {
+        $inbox = $this->db
+            ->select('o.*')
+            ->from('incoming_mail o')
+            ->order_by('date', 'ASC')
+            ->get()
+            ->result();
+
+        return $inbox;
+    }
+
     public function show_all_inbox()
     {
         $inbox = $this->db

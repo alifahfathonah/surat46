@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Inbox extends CI_Controller {
     public function __construct()
     {
@@ -412,5 +415,120 @@ class Inbox extends CI_Controller {
         get_header('Cari "'. $query .'"', NULL, 'inbox');
         get_template_part('inbox/search', $params);
         get_footer(['current_section' => 'inbox']);
+    }
+
+    public function overview()
+    {
+        $config['base_url'] = site_url('inbox/overview');
+        $config['total_rows'] = $this->inbox->total_inbox();
+        $config['per_page'] = 50;
+        $config['uri_segment'] = 3;
+        $config['num_links'] = 2;
+
+        $config['first_link'] = '&laquo;';
+        $config['prev_link'] = '&lsaquo;';
+        $config['next_link'] = '&rsaquo;';
+        $config['last_link'] = '&raquo';
+        $config['full_tag_open'] = '<nav class="text-center"><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+
+        $offset = $this->uri->segment(3);
+        $offset = ($offset == 0 || empty($offset)) ? 0 : $offset;
+
+        $this->load->library('pagination', $config);
+        $pagination = $this->pagination->create_links();
+
+        $params['inbox'] = $this->inbox->show_inbox($config['per_page'], $offset);
+        $params['pagination'] = $pagination;
+        
+        get_header('Ringkasan Surat Masuk', 'inbox', 'inbox');
+        get_template_part('inbox/overview', $params);
+        get_footer(['current_section' => 'inbox']);
+    }
+
+    public function download_excel() {
+        $mails = $this->inbox->all_inbox();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleArray = array(
+            'borders' => array(
+                'outline' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => array('argb' => '00000000'),
+                ),
+            ),
+            'font'  => array(
+            'bold'  => true,
+            'color' => array('rgb' => '000000'),
+            'size'  => 12,
+            'name'  => 'Times New Roman'
+        ));
+
+        $sheet->getStyle('A3:E3')->applyFromArray($styleArray);
+        $sheet->getStyle('A3:E3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffff00');
+
+        for ($i = 'A'; $i <= 'E'; $i++) {
+            $sheet->getColumnDimension($i)->setAutoSize(TRUE);
+        }
+
+        $sheet->setCellValue('B1', 'Laporan Surat Masuk');
+        $styleArray2 = array(
+            'font'  => array(
+                'bold' => TRUE,
+                'color' => array('rgb' => '000000'),
+                'size'  => 12,
+                'name'  => 'Times New Roman'
+        ));
+
+        $sheet->getStyle('B1')->applyFromArray($styleArray2);
+
+        $sheet->setCellValue('A3', 'No.');
+        $sheet->setCellValue('B3', 'No. Surat');
+        $sheet->setCellValue('C3', 'Perihal');
+        $sheet->setCellValue('D3', 'Tanggal Surat');
+        $sheet->setCellValue('E3', 'Asal Surat');
+
+        $i = 1;
+        foreach ($mails as $d)
+        {
+            $n = $i + 3;
+            $sheet->setCellValue('A'. $n, $i);
+            $sheet->setCellValue('B'. $n, $d->number);
+            $sheet->setCellValue('C'. $n, $d->subject);
+            $sheet->setCellValue('D'. $n, get_formatted_date($d->date));
+            $sheet->setCellValue('E'. $n, $d->from);
+
+            $i++;
+        }
+
+        $styleArray = array(
+            'font'  => array(
+                'color' => array('rgb' => '000000'),
+                'size'  => 12,
+                'name'  => 'Times New Roman'
+            )
+        );
+
+        $last = $i+2;
+        $sheet->getStyle('A3:E'. $last)->applyFromArray($styleArray);
+
+
+        $filename =  'Surat Masuk - '. time();
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
     }
 }

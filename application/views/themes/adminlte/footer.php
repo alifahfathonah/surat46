@@ -12,9 +12,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </aside>
 </div>
 
-
-<script src="<?php echo get_template_uri('plugins/jquery/jquery.min.js'); ?>"></script>
-<script src="<?php echo get_template_uri('plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
 <script src="<?php echo get_template_uri('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js'); ?>"></script>
 <script src="<?php echo get_template_uri('js/adminlte.js'); ?>"></script>
 <script src="<?php echo get_template_uri('plugins/toastr/toastr.min.js'); ?>"></script>
@@ -715,6 +712,24 @@ $('.deleteBtn').click(function(e) {
         window.print();
     });
 
+    function getBulanRomawi(no) {
+        var bulan = [];
+        bulan[0] = 'I';
+        bulan[1] = 'II';
+        bulan[2] = 'III';
+        bulan[3] = 'IV';
+        bulan[4] = 'V';
+        bulan[5] = 'VI';
+        bulan[6] = 'VII';
+        bulan[7] = 'VIII';
+        bulan[8] = 'IX';
+        bulan[9] = 'X';
+        bulan[10] = 'XI';
+        bulan[11] = 'XII';
+
+        return bulan[no];
+    }
+
     function getBulan(no) {
         var bulan = [];
         bulan[0] = 'Januari';
@@ -733,6 +748,23 @@ $('.deleteBtn').click(function(e) {
         return bulan[no];
     }
 
+    function getHari(day) {
+        var days = [];
+        days['Monday'] = 'Senin';
+        days['Tuesday'] = 'Selasa';
+        days['Wednesday'] = 'Rabu';
+        days['Thursday'] = 'Kamis';
+        days['Friday'] = 'Jum\'at';
+        days['Saturday'] = 'Sabtu';
+        days['Sunday'] = 'Minggu';
+
+        return days[day];
+    }
+
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var d = new Date();
+    var dayName = days[d.getDay()];
+
     var d = new Date();
     var day = d.getDate();
     var month = d.getMonth();
@@ -742,29 +774,54 @@ $('.deleteBtn').click(function(e) {
         day = '0'+ day;
     }
 
-    var date = day +' '+ getBulan(month) +' '+ year;
+    var date = getHari(dayName) +', '+ day +' '+ getBulan(month) +' '+ year;
     $('.today').text(date);
-    $('.itoday').val(date);
+    $('.itoday, .maildate').val(date);
+
+    var noSurat = '(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/'+ getBulanRomawi(month) +'/'+ year;
+    $('.nosurat').text(noSurat);
+    $('.inosurat').val(noSurat);
 
     function change(no) {
         $('.s'+ no).click(function() {
             $(this).hide();
-            $('.i'+ no).removeClass('d-none').focus().css('margin-bottom', '-25px');
+            $('.i'+ no).removeClass('d-none').focus();
+
+            if ( $('.p'+ no).length) {
+                $('.p'+ no).removeClass('d-none');
+            }
 
             $('.i'+ no).keyup(function(e) {
                 var key = e.keyCode;
                 var val = $(this).val();
 
                 if (key == 13) {
-                    $('.s'+ no).text(val).show();
+                    $('.s'+ no).html(val).show();
                     $('.a'+ no).val(val);
                     $(this).addClass('d-none');
+
+                    if ( $('.p'+ no).length) {
+                        var ii = $('.p'+ no).val();
+                        
+                        $('.s'+ no).css('padding-left', ii +'px');
+                        $('.p'+ no).addClass('d-none');
+                    }
                 }
             });
         });
     }
 
-    for(var i = 1; i <= 29; i++) {
+    $('.a').keyup(function(e) {
+        e.preventDefault();
+
+        var val = $(this).val();
+        var no = $(this).attr('data-a');
+        
+        $('.s'+ no).html(val);
+    });
+
+
+    for(var i = 1; i <= 32; i++) {
         change(i);
     }
     </script>

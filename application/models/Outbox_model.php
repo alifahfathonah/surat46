@@ -87,10 +87,22 @@ class Outbox_model extends CI_Model {
         $outbox = $this->db
             ->select('c.code, c.name, o.*, f.file_name')
             ->from('outbox o')
-            ->order_by('created_at', 'ASC')
+            ->order_by('o.date', 'DESC')
             ->join('classifications c', 'c.id = o.classification_code')
             ->join('files f', 'f.id = o.file_id', 'left')
             ->limit($limit, $offset)
+            ->get()
+            ->result();
+
+        return $outbox;
+    }
+
+    public function all_outbox()
+    {
+        $outbox = $this->db
+            ->select('o.*')
+            ->from('outbox o')
+            ->order_by('date', 'ASC')
             ->get()
             ->result();
 

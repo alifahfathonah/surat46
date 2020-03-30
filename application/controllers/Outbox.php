@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access alalowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Outbox extends CI_Controller {
     public function __construct()
     {
@@ -45,6 +48,7 @@ class Outbox extends CI_Controller {
 
         $params['outbox'] = $this->outbox->show_outbox($config['per_page'], $offset);
         $params['pagination'] = $pagination;
+        $params['flash'] = $this->session->flashdata('add_flash');
         
         get_header('Surat Keluar', 'outbox', 'outbox');
         get_template_part('outbox/outbox', $params);
@@ -158,34 +162,55 @@ class Outbox extends CI_Controller {
             $data->out_date = $this->input->post('out_date');
             $data->resume = $this->input->post('resume');
 
-            if (isset($_FILES) && @$_FILES['file']['error'] == '0') {
-                $config['upload_path'] = './assets/uploads/userfiles/';
-                $config['allowed_types'] = get_settings('allowed_types');
-                $config['max_size'] = get_settings('max_mail_file_size');
-                
-                $this->load->library('upload', $config);
+            if ( isset($_POST['time']) ) {
+                $time = $this->input->post('time');
+                $file = './assets/uploads/_temp/'. $time .'.pdf';
+                $file_name = $data->subject .'_'. $time;
 
-                if ($this->upload->do_upload('file'))
-                {
-                    $file_data = $this->upload->data();
-                    $file = new stdClass();
+                $file_size = filesize($file);
+                rename($file, './assets/uploads/userfiles/'. $file_name .'.pdf');
 
-                    $file->name = $file_data['raw_name'];
-                    $file->collection_name = 'outbox_file';
-                    $file->file_name = $file_data['file_name'];
-                    $file->mime_type = $file_data['file_type'];
-                    $file->size = $file_data['file_size'];
+                $file = new stdClass();
+
+                $file->name = $file_name;
+                $file->collection_name = 'inbox_file';
+                $file->file_name = $file_name .'.pdf';
+                $file->mime_type = 'application/pdf';
+                $file->size = $file_size;
                     
-                    $file_id = $this->outbox->add_file($file);
-                    $data->file_id = $file_id;                }
-                else
-                {
-                    $errors = $this->upload->display_errors();
-                    $errors .= '<p>';
-                    $errors .= anchor('outbox/add', '&laquo; Kembali');
-                    $errors .= '</p>';
+                $file_id = $this->outbox->add_file($file);
+                $data->file_id = $file_id;
+            }
+            else {
+                if (isset($_FILES) && @$_FILES['file']['error'] == '0') {
+                    $config['upload_path'] = './assets/uploads/userfiles/';
+                    $config['allowed_types'] = get_settings('allowed_types');
+                    $config['max_size'] = get_settings('max_mail_file_size');
+                
+                    $this->load->library('upload', $config);
 
-                    show_error($errors);
+                    if ($this->upload->do_upload('file'))
+                    {
+                        $file_data = $this->upload->data();
+                        $file = new stdClass();
+
+                        $file->name = $file_data['raw_name'];
+                        $file->collection_name = 'outbox_file';
+                        $file->file_name = $file_data['file_name'];
+                        $file->mime_type = $file_data['file_type'];
+                        $file->size = $file_data['file_size'];
+                    
+                        $file_id = $this->outbox->add_file($file);
+                        $data->file_id = $file_id;                }
+                    else
+                    {
+                        $errors = $this->upload->display_errors();
+                        $errors .= '<p>';
+                        $errors .= anchor('outbox/add', '&laquo; Kembali');
+                        $errors .= '</p>';
+
+                        show_error($errors);
+                    }
                 }
             }
 
@@ -194,7 +219,7 @@ class Outbox extends CI_Controller {
             
             $this->session->set_flashdata('add_flash', $flash_message);
 
-            redirect('outbox/add');
+            redirect('outbox');
         }
     }
 
@@ -345,5 +370,121 @@ class Outbox extends CI_Controller {
         return $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($res));
+    }
+
+    public function overview()
+    {
+        $config['base_url'] = site_url('outbox/overview');
+        $config['total_rows'] = $this->outbox->total_outbox();
+        $config['per_page'] = 50;
+        $config['uri_segment'] = 3;
+        $config['num_links'] = 2;
+
+        $config['first_link'] = '&laquo;';
+        $config['prev_link'] = '&lsaquo;';
+        $config['next_link'] = '&rsaquo;';
+        $config['last_link'] = '&raquo';
+        $config['full_tag_open'] = '<nav class="text-center"><ul class="pagination">';
+        $config['full_tag_close'] = '</ul></nav>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+
+        $offset = $this->uri->segment(3);
+        $offset = ($offset == 0 || empty($offset)) ? 0 : $offset;
+
+        $this->load->library('pagination', $config);
+        $pagination = $this->pagination->create_links();
+
+        $params['outbox'] = $this->outbox->show_outbox($config['per_page'], $offset);
+        $params['pagination'] = $pagination;
+        $params['flash'] = $this->session->flashdata('add_flash');
+        
+        get_header('Ringkasan Surat Keluar', 'outbox', 'outbox');
+        get_template_part('outbox/overview', $params);
+        get_footer(['current_section' => 'outbox']);
+    }
+
+    public function download_excel() {
+        $mails = $this->outbox->all_outbox();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleArray = array(
+            'borders' => array(
+                'outline' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => array('argb' => '00000000'),
+                ),
+            ),
+            'font'  => array(
+            'bold'  => true,
+            'color' => array('rgb' => '000000'),
+            'size'  => 12,
+            'name'  => 'Times New Roman'
+        ));
+
+        $sheet->getStyle('A3:E3')->applyFromArray($styleArray);
+        $sheet->getStyle('A3:E3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffff00');
+
+        for ($i = 'A'; $i <= 'E'; $i++) {
+            $sheet->getColumnDimension($i)->setAutoSize(TRUE);
+        }
+
+        $sheet->setCellValue('B1', 'Laporan Surat Keluar');
+        $styleArray2 = array(
+            'font'  => array(
+                'bold' => TRUE,
+                'color' => array('rgb' => '000000'),
+                'size'  => 12,
+                'name'  => 'Times New Roman'
+        ));
+
+        $sheet->getStyle('B1')->applyFromArray($styleArray2);
+
+        $sheet->setCellValue('A3', 'No.');
+        $sheet->setCellValue('B3', 'No. Surat');
+        $sheet->setCellValue('C3', 'Perihal');
+        $sheet->setCellValue('D3', 'Tanggal Surat');
+        $sheet->setCellValue('E3', 'Tujuan');
+
+        $i = 1;
+        foreach ($mails as $d)
+        {
+            $n = $i + 3;
+            $sheet->setCellValue('A'. $n, $i);
+            $sheet->setCellValue('B'. $n, $d->number);
+            $sheet->setCellValue('C'. $n, $d->subject);
+            $sheet->setCellValue('D'. $n, get_formatted_date($d->date));
+            $sheet->setCellValue('E'. $n, $d->to);
+
+            $i++;
+        }
+
+        $styleArray = array(
+            'font'  => array(
+                'color' => array('rgb' => '000000'),
+                'size'  => 12,
+                'name'  => 'Times New Roman'
+            )
+        );
+
+        $last = $i+2;
+        $sheet->getStyle('A3:E'. $last)->applyFromArray($styleArray);
+
+
+        $filename =  'Surat Keluar - '. time();
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
     }
 }

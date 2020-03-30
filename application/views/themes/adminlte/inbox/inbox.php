@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <table class="table table-striped table-bordered m-0">
                         <tr class="bg-primary">
                             <th style="width: 10%;">No. Agenda / Klasifikasi</th>
-                            <th style="width: 40%;">Ringkasan / File</th>
+                            <th style="width: 40%;">Perihal / File</th>
                             <th style="width: 15%;">Asal Surat</th>
                             <th style="width: 25%;">No. Surat / Tanggal Surat</th>
                             <th style="width: 10%;"></th>
@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php echo $mail->code; ?>  / <?php echo $mail->name; ?> 
                             </td>
                             <td class="text-justify">
-                                <?php echo ($mail->resume) ? $mail->resume : '-'; ?> 
+                                <?php echo $mail->subject; ?> 
                                     <br><hr>
                                     <?php if ($mail->file_id) : ?>
                                     File: <?php echo anchor(base_url('assets/uploads/userfiles/'. $mail->file_name), $mail->file_name); ?>
@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <td>
                                 <?php echo $mail->number; ?> 
                                     <br><hr>
-                                <?php echo date('d F Y', strtotime($mail->date)); ?>
+                                <?php echo get_formatted_date($mail->date); ?>
                             </td>
                             <td class="text-right" style="width: 20%;">
                                 <a href="<?php echo site_url('inbox/view/'. $mail->id); ?>" class="btn btn-primary btn-sm">LIHAT</a>

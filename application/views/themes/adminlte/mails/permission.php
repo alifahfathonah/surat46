@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </td>
                                     <td>:<br>:</td>
                                     <td>
-                                        <span class="s6">(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/2019</span>
+                                        <span class="s6">(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/<span class="currentYear">2020</span></span>
                                         <input type="text" class="form-control d-none i6" value="(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/2019">
                                             <br>
                                         <b><u><span class="s7">Surat Izin Pemakaian Gedung (.......)</span></u></b>

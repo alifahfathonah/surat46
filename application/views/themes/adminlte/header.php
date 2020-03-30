@@ -10,13 +10,20 @@ $query = (NULL !== $this->input->get('query')) ? html_escape($this->input->get('
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title><?php echo $title; ?></title>
+
+    <!-- <?php echo $current_section; ?> -->
   
     <link rel="stylesheet" href="<?php echo get_template_uri('plugins/fontawesome-free/css/all.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo get_template_uri('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo get_template_uri('css/adminlte.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo get_template_uri('plugins/toastr/toastr.min.css'); ?>">
+    <link rel="stylesheet" href="<?php echo get_template_uri('plugins/air-datepicker/dist/css/datepicker.min.css'); ?>">
+    <link rel="stylesheet" href="<?php echo get_template_uri('plugins/select2js/dist/css/select2.min.css'); ?>">
 
     <link rel="icon" href="<?php echo base_url('assets/uploads/static/icon.png'); ?>" type="image/icon">
+
+    <script src="<?php echo get_template_uri('plugins/jquery/jquery.min.js'); ?>"></script>
+    <script src="<?php echo get_template_uri('plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
 
     <?php if ($current_section == 'add_inbox' || $current_section == 'add_outbox') : ?>
     <link rel="stylesheet" href="<?php echo get_template_uri('plugins/air-datepicker/dist/css/datepicker.min.css'); ?>">
@@ -144,16 +151,27 @@ $query = (NULL !== $this->input->get('query')) ? html_escape($this->input->get('
         <a href="<?php echo site_url('dispositions/add'); ?>" title="Tambah data disposisi"><i class="fa fa-plus-circle"></i></a>
     </li>
     <?php endif; ?>
+    
     <?php if ($current_section == 'inbox' || $current_section == 'add_inbox' || $current_section == 'view_inbox' || $current_section == 'print') : ?>
-      <li class="nav-item">
+      <li class="nav-item m-1">
+      <?php echo anchor('inbox/overview', '<i class="fa fa-file-excel"></i>'); ?>
+    </li>
+
+      <li class="nav-item m-1">
         <a href="<?php echo site_url('inbox/add'); ?>" title="Tambah surat baru"><i class="fa fa-plus-circle"></i></a>
     </li>
     <?php endif; ?>
 
     <?php if ($current_section == 'outbox' || $current_section == 'add_outbox' || $current_section == 'view_outbox') : ?>
-      <li class="nav-item">
+      <li class="nav-item m-1">
+      <?php echo anchor('outbox/overview', '<i class="fa fa-file-excel"></i>'); ?>
+    </li>
+    
+      <li class="nav-item m-1">
         <a href="<?php echo site_url('outbox/add'); ?>" title="Tambah surat baru"><i class="fa fa-plus-circle"></i></a>
     </li>
+    
+    
     <?php endif; ?>
 
       <li class="nav-item dropdown">

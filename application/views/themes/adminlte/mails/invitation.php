@@ -21,7 +21,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <section class="content">
         <div class="row">
+        
             <div class="col-md-8">
+            <form action="#" id="data" method="post">
                 <div class="card">
                     <div class="card-body p-0 printpage">
                         <div class="print_head">
@@ -69,15 +71,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </td>
                                     <td>:<br>:</td>
                                     <td>
-                                        <span class="s6">(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/2019</span>
-                                        <input type="text" class="form-control d-none i6" value="(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/2019">
+                                        <span class="s6 nosurat"></span>
+                                        <input type="text" name="number" class="form-control d-none i6 inosurat" value="">
                                             <br>
                                         <b><u><span class="s7">Undangan</span></u></b>
-                                        <input type="text" class="form-control d-none i7" value="Undangan">
+                                        <input type="text" class="form-control d-none i7" name="subject" value="Undangan">
                                     </td>
                                     <td style="float:right">
                                         <span class="s8 today"></span>
                                         <input type="text" class="form-control d-none i8 itoday">
+                                        <input type="hidden" name="date" value="" class="maildate">
                                     </td>
                                 </tr>
                             </table>
@@ -88,13 +91,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         Kepada Yth
                                             <br>
                                         <b><u><span class="s9">Tujuan Undangan</span></u></b>
-                                        <input type="text" class="form-control d-none i9" value="Tujuan Undangan">
+                                        <input type="text" class="form-control d-none i9" value="Tujuan Undangan" name="mail_to">
                                             <br>
                                         Di -
                                             <br>
                                         <div style="text-indent: 25px;">
                                             <span class="s10">Tempat</span>
-                                            <input type="text" class="form-control d-none i10" value="Tempat">
+                                            <input type="text" class="form-control d-none i10" value="Tempat" name="mail_to_place">
                                         </div>
                                             
                                         <span style="display: block;">Dengan hormat,</span>
@@ -113,13 +116,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <span class="s13">
                                                 Alhamdulillahirobbil’aalamiin. Puji syukur kita panjatkan atas segala nikmat yang telah Allah subhanawata’ala berikan. Sholawat dan salam semoga selalu tercurahkan kepada junjungan kita Nabi Muhammad shallallahu’alaihiwasallam.
                                             </span>
-                                            <input type="text" class="form-control i12 d-none" value="Alhamdulillahirobbil’aalamiin. Puji syukur kita panjatkan atas segala nikmat yang telah Allah subhanawata’ala berikan. Sholawat dan salam semoga selalu tercurahkan kepada junjungan kita Nabi Muhammad shallallahu’alaihiwasallam.">
+                                            <input type="text" class="form-control i13 d-none" value="Alhamdulillahirobbil’aalamiin. Puji syukur kita panjatkan atas segala nikmat yang telah Allah subhanawata’ala berikan. Sholawat dan salam semoga selalu tercurahkan kepada junjungan kita Nabi Muhammad shallallahu’alaihiwasallam.">
                                         </div>
                                         <div class="txt1">
-                                            <span class="s14">
-                                                Sehubungan dengan akan dilaksanakannya kegiatan (Nama Kegiatan), dengan ini kami mengundang bapak untuk hadir dalam acara kami, yang insyaaAllah akan dilaksanakan pada :
-                                            </span>
-                                            <input type="text" class="form-control i14 d-none" value="Sehubungan dengan akan dilaksanakannya kegiatan (Nama Kegiatan), dengan ini kami mengundang bapak untuk hadir dalam acara kami, yang insyaaAllah akan dilaksanakan pada :">
+                                            Sehubungan dengan akan dilaksanakannya kegiatan <span class="s14">(Nama Kegiatan)</span>, dengan ini kami mengundang bapak untuk hadir dalam acara kami, yang insyaaAllah akan dilaksanakan pada :
+                                            <input type="text" class="form-control i14 d-none" value="(Nama Kegiatan)" name="event_name">
                                         </div>
                                     </td>
                                 </tr>
@@ -137,14 +138,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </td>
                                     <td>:<br>:<br>:</td>
                                     <td>
-                                        <span class="s15">Jum'at, <span class="today">7 Februari 2020</span></span>
-                                        <input type="text" class="form-control d-none i15 itoday">
+                                        <span class="s15"><span class="today"></span></span>
+                                        <input type="text" class="form-control d-none i15 itoday" name="event_date">
                                             <br>
                                         <span class="s16">07:00</span>
-                                        <input type="text" class="form-control d-none i16" value="07:00">
+                                        <input type="text" class="form-control d-none i16" value="07:00" name="event_time">
                                             <br>
                                         <span class="s17">Dekanat FT</span>
-                                        <input type="text" class="form-control d-none i17" value="Dekanat FT">
+                                        <input type="text" class="form-control d-none i17" value="Dekanat FT" name="event_location">
                                     </td>
                                 </tr>
                             </table>
@@ -174,38 +175,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <tr>
                                     <td style="padding-left: 120px;">
                                         <span class="s21">Ketua Pelaksana</span>
-                                        <input type="text" class="form-control d-none i21" value="Ketua Umum">
+                                        <input type="text" class="form-control d-none i21" value="Ketua Pelaksana" name="leader_text_one">
+                                        <input type="text" class="form-control d-none p21" data-p="21" value="0">
                                             <br>
                                             <br>
                                             <br>
                                             <br>
                                         <span style="border-bottom: 2px solid #333;">
-                                            <span class="s22">Agung Tri Saputra</span>
-                                            <input type="text" class="form-control i22 d-none" value="Agung Tri Saputra">
+                                            <span class="s22">Abdul Latif Mubarok</span>
+                                            <input type="text" class="form-control i22 d-none" value="Abdul Latif Mubarok" name="leader_item_one">
+                                            <input type="text" class="form-control d-none p22" data-p="22" value="0">
                                         </span>
                                             <br>
                                         <div style="text-indent: 15px;">
-                                            <span class="s23">G1A019056</span>
+                                            <span class="s23">G1A019035</span>
                                         </div>
-                                        <input type="text" class="form-control d-none i23" value="G1A019056">
+                                        <input type="text" class="form-control d-none i23" value="G1A018035" name="leader_number_one">
+                                        <input type="text" class="form-control d-none p23" data-p=23"" value="0">
                                     </td>
                                     <td></td>
                                     <td>
                                         <span class="s24">Sekretaris Pelaksana</span>
-                                        <input type="text" class="form-control d-none i24" value="Ketua Panitia">
+                                        <input type="text" class="form-control d-none i24" value="Sekretaris Pelaksana" name="leader_text_second">
+                                        <input type="text" class="form-control d-none p24" data-p="24" value="0">
                                             <br>
                                             <br>
                                             <br>
                                             <br>
                                         <span style="border-bottom: 2px solid #333">
                                             <span class="s25">Alfath Arif Rizkullah</span>
-                                            <input type="text" class="form-control i25 d-none" value="Alfath Arif Rizkullah">
+                                            <input type="text" class="form-control i25 d-none" value="Alfath Arif Rizkullah" name="leader_item_second">
+                                            <input type="text" class="form-control d-none p24" data-p="24" value="0">
                                         </span>
                                             <br>
                                         <div style="text-indent: 25px;">
                                             <span class="s26">G1A019082</span>
                                         </div>
-                                        <input type="text" class="form-control d-none i26" value="G1A0190825">
+                                        <input type="text" class="form-control d-none i26" value="G1A0190825" name="leader_number_second">
+                                        <input type="text" class="form-control d-none p24" data-p="24" value="0">
                                     </td>
                                 </tr>
                                 <tr>
@@ -214,20 +221,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="ketum">
                                                 <span class="s27">Ketua Umum</span>
                                             </div>
-                                            <input type="text" class="form-control d-none i27" value="Ketua Umum">
+                                            <input type="text" name="co_leader_text" class="form-control d-none i27" value="Ketua Umum">
+                                            <input type="text" class="form-control d-none p27" data-p="27" value="0">
                                                 <br>
                                                 <br>
                                                 <br>
                                                 <br>
                                             <span style="border-bottom: 2px solid #333">
                                                 <span class="s28">Arsyi Arif Agami</span>
-                                                <input type="text" class="form-control d-none i28" value="Arsyi Arif Agami">
+                                                <input type="text" name="co_leader_name" class="form-control d-none i28" value="Arsyi Arif Agami">
+                                                <input type="text" class="form-control d-none p28" data-p="28" value="0">
                                             </span>
                                                 <br>
                                         <div style="text-indent: 20px">
                                             <span class="s29">G1A018035</span>
                                         </div>
-                                        <input type="text" class="form-control d-none i29" value="G1A018035">
+                                        <input type="text" name="co_leader_number" class="form-control d-none i29" value="G1A018035">
+                                        <input type="text" class="form-control d-none p29" data-p="29" value="0">
                                     </td>
                                     <td></td>
                                 </tr>
@@ -236,14 +246,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     </div>
                 </div>
+                </form>
             </div>
+           
 
             <div class="col-md-4 outbox_data">
                 <div class="card card-primary">
                     <div class="card-header">
                         <h5 class="card-title">Undangan</h5>
                     </div>
-                    <?php echo form_open_multipart('outbox/add_outbox'); ?>
+                    <?php echo form_open_multipart('outbox/add_outbox', array('id' => 'mail_data')); ?>
+                    <input type="hidden" name="time" value="" class="mail-time">
                     <div class="card-body">
 
                         <div class="form-group">
@@ -278,7 +291,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-language"></i></span>
                                 </div>
-                                <input type="text" name="subject" value="<?php echo set_value('subject', 'Undangan'); ?>" class="form-control a7" id="subject">
+                                <input type="text" name="subject" value="<?php echo set_value('subject', 'Undangan'); ?>" class="form-control a7 a" data-a="7" id="subject">
                             </div>
                             <?php echo form_error('subject'); ?>
                         </div>
@@ -289,7 +302,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-hashtag"></i></span>
                                 </div>
-                                <input type="text" name="number" value="<?php echo set_value('number', '(...)/S.I/PanPel/Muker/Mostaneer/FT/UNIB/XII/2019'); ?>" class="form-control a6" id="number">
+                                <input type="text" name="number" value="<?php echo set_value('number'); ?>" class="form-control a6 a inosurat" data-a="6" id="number">
                             </div>
                             <?php echo form_error('number'); ?>
                         </div>
@@ -300,7 +313,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
                                 </div>
-                                <input type="text" name="mail_date" value="<?php echo set_value('mail_date'); ?>" class="form-control a8 itoday" id="mail_date" minlength="6" maxlength="255" required>
+                                <input type="text" name="date" value="<?php echo set_value('mail_date'); ?>" class="form-control a8 itoday a" data-a="8" id="mail_date" minlength="6" maxlength="255" required>
+                                <input type="hidden" name="mail_date" value="<?php echo date('Y-m-d'); ?>" class="mail-date">
                             </div>
                             <?php echo form_error('mail_date'); ?>
                         </div>
@@ -322,14 +336,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-database"></i></span>
                                 </div>
-                                <input type="text" name="to" value="<?php echo set_value('to', 'Tujuan Undangan'); ?>" class="form-control a9" id="to" minlength="6" maxlength="255" required>
+                                <input type="text" name="to" value="<?php echo set_value('to', 'Tujuan Undangan'); ?>" class="form-control a9 a" data-a="9" id="to" minlength="6" maxlength="255" required>
                             </div>
                             <?php echo form_error('to'); ?>
                         </div>
 
                     </div>
                     <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" value="Simpan">
+                        <button type="button" class="btn btn-primary btn-save">Simpan</button>
                         <input type="button" class="btn btn-primary btn-print" value="Print">
                     </div>
                     <?php echo form_close(); ?>
@@ -339,3 +353,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </section>
     <!-- /.content -->
   </div>
+
+  <script src="<?php echo get_template_uri('plugins/air-datepicker/dist/js/datepicker.min.js'); ?>"></script>
+  <script src="<?php echo get_template_uri('plugins/air-datepicker/dist/js/i18n/datepicker.id.js'); ?>"></script>
+  <script>
+    function saveMail(time) {
+        $('.mail-time').val(time);
+
+        setTimeout(() => {
+            $('#mail_data').submit();
+        }, 1000);
+        
+    }
+
+    $('.btn-save').click(function(e) {
+        e.preventDefault();
+
+        $(this).html('<i class="fa fa-spin fa-spinner"></i> Menyimpan...').attr('disabled', true);
+
+        var data = $('#data').serialize();
+        
+        $.ajax({
+            method: 'GET',
+            url: '<?php echo site_url('mails/export_pdf'); ?>',
+            data: data,
+            context: this,
+            success: function(res) {
+                if (res.success) {
+                    $(this).html('<i class="fa fa-check"></i> Berhasil');
+                    var time = res.time;
+
+                    saveMail(time);
+                    setTimeout(function() {
+                        $(this).html('Simpan').removeAttr('disabled');
+                    }, 1000);
+                }
+            }
+        });
+    });
+
+    $('#mail_date').datepicker({
+        language: 'id',
+        dateFormat: 'yyyy-mm-dd',
+        todayButton: new Date(),
+        clearButton: true,
+        autoClose: true,
+        onSelect : function(dateText, inst) {
+            $.ajax({
+                method: 'GET',
+                url: '<?php echo site_url('mails/convert_date'); ?>',
+                data: { date: dateText },
+                success: function(res) {
+                    $('#mail_date, .maildate').val(res.day);
+                    $('.s8.today').text(res.day);
+                    $('.mail-date').val(dateText);
+
+                }
+            })
+        }
+    });
+  </script>
