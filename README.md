@@ -13,4 +13,8 @@ Username / Password: admin / 12345
 
 Note: harap jangan mengubah username / password demo-nya
 
+<<<<<<< HEAD
 Versi 1.4.0
+=======
+Versi 1.3.0
+>>>>>>> 29a44d8d0dbf10d8f605f3fc1f1f18aab7c59fc4
